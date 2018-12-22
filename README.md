@@ -55,6 +55,8 @@ const lineClamp = require('line-clamp')
 
 ### lineClamp(element, lineCount [, options])
 
+Returns `true` if text was truncated, else returns `false`.
+
 `options` is an optional object literal.
 
 - Set `options.ellipsis` to change the string to be appended to the truncated text. Defaults to `…`.
