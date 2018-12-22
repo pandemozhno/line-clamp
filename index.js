@@ -95,10 +95,10 @@ module.exports = function (rootElement, lineCount, options) {
 
   // Exit if text does not overflow `rootElement`.
   if (rootElement.scrollHeight <= maximumHeight) {
-    return
+    return false
   }
 
-  truncateElementNode(
+  return truncateElementNode(
     rootElement,
     rootElement,
     maximumHeight,
