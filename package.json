@@ -37,6 +37,9 @@
       "git add"
     ]
   },
+  "files": [
+    "index.js"
+  ],
   "keywords": [
     "clamp",
     "dom",
