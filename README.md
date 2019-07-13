@@ -1,11 +1,10 @@
-# line-clamp [![npm Version](http://img.shields.io/npm/v/line-clamp.svg?style=flat)](https://www.npmjs.com/package/line-clamp) [![Build Status](https://img.shields.io/travis/yuanqing/line-clamp.svg?branch=master&style=flat)](https://travis-ci.org/yuanqing/line-clamp)
+# line-clamp [![npm Version](https://badgen.net/npm/v/line-clamp)](https://www.npmjs.org/package/line-clamp) [![Build Status](https://badgen.net/travis/yuanqing/line-clamp?label=build)](https://travis-ci.org/yuanqing/line-clamp) [![Bundle Size](https://badgen.net/bundlephobia/minzip/line-clamp)](https://bundlephobia.com/result?p=line-clamp)
 
-> Line clamp a DOM element in vanilla JavaScript.
+> Line clamp a DOM element in vanilla JavaScript
 
 - Truncates in pure JavaScript; does *not* rely on [`-webkit-line-clamp`](https://css-tricks.com/line-clampin/)
 - Works even if the given element contains nested DOM nodes
 - Supports appending a custom string instead of an ellipsis (`…`)
-- 477 bytes gzipped
 
 ## Usage
 
@@ -57,7 +56,7 @@ const lineClamp = require('line-clamp')
 
 Returns `true` if text was truncated, else returns `false`.
 
-`options` is an optional object literal.
+`options` is an optional configuration object.
 
 - Set `options.ellipsis` to change the string to be appended to the truncated text. Defaults to `…`.
 
@@ -65,16 +64,8 @@ See [Usage](#usage).
 
 ## Installation
 
-Install via [yarn](https://yarnpkg.com):
-
 ```sh
 $ yarn add line-clamp
-```
-
-Or [npm](https://npmjs.com):
-
-```sh
-$ npm install --save line-clamp
 ```
 
 ## Prior art
