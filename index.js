@@ -1,11 +1,67 @@
+const ELLIPSIS_CHARACTER = '\u2026'
+
+function lineClamp (rootElement, lineCount, options) {
+  rootElement.style.cssText +=
+    'overflow:hidden;overflow-wrap:break-word;word-wrap:break-word'
+
+  const maximumHeight =
+    (lineCount || 1) *
+    parseInt(window.getComputedStyle(rootElement).lineHeight, 10)
+
+  // Exit if text does not overflow `rootElement`.
+  if (rootElement.scrollHeight <= maximumHeight) {
+    return false
+  }
+
+  return truncateElementNode(
+    rootElement,
+    rootElement,
+    maximumHeight,
+    (options && options.ellipsis) || ELLIPSIS_CHARACTER
+  )
+}
+
+function truncateElementNode (
+  element,
+  rootElement,
+  maximumHeight,
+  ellipsisCharacter
+) {
+  const childNodes = element.childNodes
+  let i = childNodes.length - 1
+  while (i > -1) {
+    const childNode = childNodes[i--]
+    if (
+      (childNode.nodeType === 1 &&
+        truncateElementNode(
+          childNode,
+          rootElement,
+          maximumHeight,
+          ellipsisCharacter
+        )) ||
+      (childNode.nodeType === 3 &&
+        truncateTextNode(
+          childNode,
+          rootElement,
+          maximumHeight,
+          ellipsisCharacter
+        ))
+    ) {
+      return true
+    }
+    element.removeChild(childNode)
+  }
+  return false
+}
+
 function truncateTextNode (
   textNode,
   rootElement,
   maximumHeight,
   ellipsisCharacter
 ) {
-  var lastIndexOfWhitespace
-  var textContent = textNode.textContent
+  let lastIndexOfWhitespace
+  let textContent = textNode.textContent
   while (textContent.length > 1) {
     lastIndexOfWhitespace = textContent.lastIndexOf(' ')
     if (lastIndexOfWhitespace === -1) {
@@ -26,15 +82,16 @@ function truncateTextNode (
   )
 }
 
-var TRAILING_WHITESPACE_AND_PUNCTUATION_REGEX = /[ .,;!?'‘’“”\-–—]+$/
+const TRAILING_WHITESPACE_AND_PUNCTUATION_REGEX = /[ .,;!?'‘’“”\-–—]+$/
+
 function truncateTextNodeByCharacter (
   textNode,
   rootElement,
   maximumHeight,
   ellipsisCharacter
 ) {
-  var textContent = textNode.textContent
-  var length = textContent.length
+  let textContent = textNode.textContent
+  let length = textContent.length
   while (length > 1) {
     // Trim off one trailing character and any trailing punctuation and whitespace.
     textContent = textContent
@@ -49,59 +106,4 @@ function truncateTextNodeByCharacter (
   return false
 }
 
-function truncateElementNode (
-  element,
-  rootElement,
-  maximumHeight,
-  ellipsisCharacter
-) {
-  var childNodes = element.childNodes
-  var i = childNodes.length - 1
-  while (i > -1) {
-    var childNode = childNodes[i--]
-    var nodeType = childNode.nodeType
-    if (
-      (nodeType === 1 &&
-        truncateElementNode(
-          childNode,
-          rootElement,
-          maximumHeight,
-          ellipsisCharacter
-        )) ||
-      (nodeType === 3 &&
-        truncateTextNode(
-          childNode,
-          rootElement,
-          maximumHeight,
-          ellipsisCharacter
-        ))
-    ) {
-      return true
-    }
-    element.removeChild(childNode)
-  }
-  return false
-}
-
-var ELLIPSIS_CHARACTER = '\u2026'
-
-module.exports = function (rootElement, lineCount, options) {
-  rootElement.style.cssText +=
-    'overflow:hidden;overflow-wrap:break-word;word-wrap:break-word'
-
-  var maximumHeight =
-    (lineCount || 1) *
-    parseInt(window.getComputedStyle(rootElement).lineHeight, 10)
-
-  // Exit if text does not overflow `rootElement`.
-  if (rootElement.scrollHeight <= maximumHeight) {
-    return false
-  }
-
-  return truncateElementNode(
-    rootElement,
-    rootElement,
-    maximumHeight,
-    (options && options.ellipsis) || ELLIPSIS_CHARACTER
-  )
-}
+module.exports = lineClamp
