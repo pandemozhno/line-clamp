@@ -3,10 +3,11 @@ const ELLIPSIS_CHARACTER = '\u2026'
 function lineClamp (rootElement, lineCount, options) {
   rootElement.style.cssText +=
     'overflow:hidden;overflow-wrap:break-word;word-wrap:break-word'
-
-  const maximumHeight =
-    (lineCount || 1) *
+  let maximumHeight = 16 // default 16px line-height when window.getComputedStyle is null
+  if (window.getComputedStyle) {
+    maximumHeight = (lineCount || 1) *
     parseInt(window.getComputedStyle(rootElement).lineHeight, 10)
+  }
 
   // Exit if text does not overflow `rootElement`.
   if (rootElement.scrollHeight <= maximumHeight) {
